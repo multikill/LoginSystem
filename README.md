@@ -1,4 +1,11 @@
 # LoginSystem
 VB.NET LoginSystem with PHP API
 
-Project created by astron-dev.
+This Project was made by astron-dev.
+
+First thanks to Ar1i, for helping me.
+
+If you use my Code, i would really appreciate it if you give me Credit.
+
+Info:
+This is just an Example its not fully Secure!
