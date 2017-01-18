@@ -9,7 +9,7 @@ $dbpass   = "root";
 $user     = mysql_real_escape_string($_GET['username']);
 $pass     = mysql_real_escape_string($_GET['password']);
 $sendhwid = mysql_real_escape_string($_GET['hwid']);
-$akt      = "true";
+$aktiv    = "true";
 
 //MySQL Connection
 mysql_connect($dbhost, $dbuser, $dbpass) or die("Could not connect: " . mysql_error());
