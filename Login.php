@@ -1,21 +1,15 @@
 <?php
 // Made by astron-dev; Pls give credit if youre using my Code.
-// Connection for MySQL
-$dbhost   = "localhost";
-$dbname   = "test";
-$dbuser   = "root";
-$dbpass   = "root";
-//variables for MySQL
-$user     = mysql_real_escape_string($_GET['username']);
-$pass     = mysql_real_escape_string($_GET['password']);
-$sendhwid = mysql_real_escape_string($_GET['hwid']);
-$aktiv    = "true";
+if(!@include("Settings.php")){die("Database not set up!");}
 
-//MySQL Connection
-mysql_connect($dbhost, $dbuser, $dbpass) or die("Could not connect: " . mysql_error());
-$verb = mysql_select_db($dbname);
+//Variables for MySQL
+$user        = mysql_real_escape_string($_GET['username']);
+$pass        = mysql_real_escape_string($_GET['password']);
+$sendhwid = mysql_real_escape_string($_GET['hwid']);
+$active      = "true";
+
 if ($verb) {
-    $sql = "SELECT * FROM enteryourname WHERE username='" . $user . "'";
+    $sql = "SELECT * FROM ".$dbtable." WHERE username='" . $user . "'";
     $quer = mysql_query($sql) or die(mysql_error());
     $num = mysql_num_rows($quer);
     if ($num == 0) {
@@ -26,15 +20,17 @@ if ($verb) {
         $activated = $row->activated;
         $hwid      = $row->hwid;
         if ($password == $pass) {
-            if ($aktiv != "true") {
+            if ($active != "true") {
                 die("User is not activated!");
             }
             if ($sendhwid != $hwid) {
-				mysql_query("UPDATE test SET aktiv='false' WHERE username='$user'");
+				mysql_query("UPDATE ".$dbtable." SET active='false' WHERE username='$user'");
                 die("wronghwid");
             }
             die("success");
         }
     }
 }
+
+mysql_close();
 ?>
