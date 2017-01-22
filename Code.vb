@@ -7,7 +7,7 @@ Public Class Form1
     Dim enteredemail As String
     Dim entereduser As String
     Dim enteredpw As String
-    Dim token As String = "1234"
+    Dim ctoken As String
 
     'HWID Getter
     Function GetHWID()
@@ -69,10 +69,32 @@ Public Class Form1
 
     'LOGIN FUNCTION
     Private Sub btn_login_Click(sender As Object, e As EventArgs) Handles btn_login.Click
+                'Security Token Generator
+        Dim pool As String = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+        Dim count = 0
+        Dim rnd As New Random
+        Dim strpos = ""
+        Dim rndtoken = ""
+        While count <= 16
+            strpos = rnd.Next(0, pool.Length)
+            count = count + 1
+        End While
+        rndtoken = pool(strpos)
+
+        'MD5 Generator for SecurityToken
+        Dim md5 As New System.Security.Cryptography.MD5CryptoServiceProvider
+        Dim bytes() As Byte = md5.ComputeHash(System.Text.Encoding.ASCII.GetBytes(rndtoken))
+        Dim s As String = ""
+        For Each i As Byte In bytes
+            s &= i.ToString("x2")
+        Next
+        ctoken = s
+
+        'Web Request
         entereduser = login_user.Text
         enteredpw = login_pw.Text
         Dim webbrowser1 As New WebBrowser
-        webbrowser1.Navigate("http://yourdomain.net/login.php?username=" & entereduser & "&password=" & Encrypt(enteredpw, "This is Keys") & "&hwid=" & Encrypt(GetHWID, "This is Keys"))
+        webbrowser1.Navigate("http://yourdomain.net/login.php?username=" & entereduser & "&password=" & Encrypt(enteredpw, "This is Keys") & "&hwid=" & Encrypt(GetHWID, "This is Keys") & "&token=" & rndtoken)
         Do While webbrowser1.ReadyState <> WebBrowserReadyState.Complete
             Application.DoEvents()
         Loop
@@ -80,7 +102,7 @@ Public Class Form1
             MsgBox("This PC is not authorized, Account banned.", MsgBoxStyle.Critical, "AntiPiracy")
         End If
 
-        If webbrowser1.DocumentText.Contains("success") Then
+If webbrowser1.DocumentText.Contains(ctoken) Then
             MessageBox.Show("Successfully logged in.")
             Form2.Show()
         Else
