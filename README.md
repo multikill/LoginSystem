@@ -11,5 +11,5 @@ Info:
 This is just an Example its not fully Secure!
 
 ### Todo:
-[DONE] Encrypt the passwords
-[ ] Switch to MySQLi or PDO
+- [x] Encrypt the passwords
+- [ ] Switch to MySQLi or PDO
