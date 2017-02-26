@@ -12,4 +12,7 @@ This is just an Example its not fully Secure!
 
 ### Todo:
 - [x] Encrypt the passwords
-- [ ] Switch to MySQLi or PDO
+- [x] Switch to MySQLi or PDO
+- [x] Random Token for each Login
+- [ ] Session Login System + Last IP
+- [ ] WebPanel
