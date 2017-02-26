@@ -8,6 +8,6 @@ $dbpass   = "root";
 $dbtable  = "LoginSystem";
 
 //MySQL Connection
-mysql_connect($dbhost, $dbuser, $dbpass) or die("Could not connect: " . mysql_error());
-$verb = mysql_select_db($dbname);
+mysqli_connect($dbhost, $dbuser, $dbpass) or die("Could not connect: " . mysqli_error());
+$verb = mysqli_select_db($dbname);
 ?>
