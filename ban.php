@@ -4,7 +4,6 @@ if(!@include("Settings.php")){die("Database not set up!");}
 
 //Variables for MySQL
 $sendhwid    = mysqli_real_escape_string($_GET['hwid']);
-$ban         = $_GET['ban'];
 $active      = "true";
 
 if ($verb) {
