@@ -1,41 +1,32 @@
 <?php
 // Made by astron-dev; Pls give credit if youre using my Code.
-if(!@include("Settings.php")){die("Database not set up!");}
+require_once 'Settings.php';
 
 //Variables for MySQL
-$user        = mysqli_real_escape_string($_GET['username']);
-$pass        = mysqli_real_escape_string($_GET['password']);
-$sendhwid    = mysqli_real_escape_string($_GET['hwid']);
+$user        = strip_tags($_GET['username']);
+$pass        = strip_tags($_GET['password']);
+$sendhwid    = strip_tags($_GET['hwid']);
 $token       = $_GET['token'];
 $active      = "true";
 
-if ($verb) {
-    $sql = "SELECT * FROM ".$dbtable." WHERE username='" . $user . "'";
-    $quer = mysqli_query($sql) or die(mysqli_error());
-    $num = mysqli_num_rows($quer);
-    if ($num == 0) {
-    } else {
-        $row       = mysqli_fetch_object($quer);
-        $password  = $row->password;
-        $activated = $row->activated;
-        $hwid      = $row->hwid;
-        if ($password == $pass) {
-            if ($active != "true") {
-                die("User is not activated!");
-            }
+$user        = $DBcon->real_escape_string($_GET['username']);
+$pass        = $DBcon->real_escape_string($_GET['password']);
+$sendhwid    = $DBcon->real_escape_string($_GET['hwid']);
+
+    $query = $DBcon->query("SELECT username FROM "$DBtable" WHERE username='$user'");
+    $row=$query->fetch_array();
+	$count = $query->num_rows
+    if ($pass = $row['password'] && $row['active'] == "true" && $hwid = $row['hwid'];) {
 		if ($token = "") {
 			mysqli_query("UPDATE ".$dbtable." SET active='false' WHERE username='$user'");
 			echo("Invalid Session, your account was banned due to Security reasons. Please contact the Support to get your account unbanned.");
 		}
-            if ($sendhwid != $hwid) {
-				mysqli_query("UPDATE ".$dbtable." SET active='false' WHERE username='$user'");
-                die("wronghwid");
-            }
             $ctoken = md5($token);
 	    echo("$ctoken");
-        }
-    }
-}
+        } else {
+				mysqli_query("UPDATE "$DBtable." SET active='false' WHERE username='$user'");
+                die("wronghwid");
+            }
 
-mysqli_close();
+$DBcon->close();
 ?>
