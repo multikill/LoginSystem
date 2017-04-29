@@ -1,14 +1,18 @@
 <?php
 // Made by astron-dev; Pls give credit if youre using my Code.
-if(!@include("Settings.php")){die("Database not set up!");}
+require_once 'Settings.php';
 
-//Variables for MySQL
-$user     = mysqli_real_escape_string($_GET['user']);
-$pass     = mysqli_real_escape_string($_GET['pw5']);
-$email    = mysqli_real_escape_string($_GET['email']);
-$hwid     = mysqli_real_escape_string($_GET['hwid']);
+//Variables for MySQLi
+$user     = strip_tags($_GET['user']);
+$pass     = strip_tags($_GET['pw5']);
+$email    = strip_tags($_GET['email']);
+$hwid     = strip_tags($_GET['hwid']);
 
-if ($verb) {
+$user     = $DBcon->real_escape_string($_GET['user']);
+$pass     = $DBcon->real_escape_string($_GET['pw5']);
+$email    = $DBcon->real_escape_string($_GET['email']);
+$hwid     = $DBcon->real_escape_string($_GET['hwid']);
+
     if ($email == "" or $user == "" or $pass == "") {
         if ($email == "")
             die("<br>Errorcode: <b>2</b>");
@@ -19,26 +23,20 @@ if ($verb) {
         if ($pass == "")
             die("<br>Errorcode: <b>4</b>");
     } else {
-        $request_email = "SELECT email FROM ".$dbtable." WHERE email='$email'";
-        $request_user  = "SELECT username FROM ".$dbtable." WHERE username='$user'";
-        $result_email  = mysqli_query($request_email);
-        $result_user   = mysqli_query($request_user);
-        if (mysqli_num_rows($result_email) > 0 or mysqli_num_rows($result_user) > 0) {
+        $result_email  = $DBcon->query("SELECT email FROM ".$DBtable." WHERE email='$email'");
+        $result_user   = $DBcon->query("SELECT username FROM ".$DBtable." WHERE username='$user'");
+        if ($result_email->num_rows > 0 or $result_user->num_rows > 0) {
             die("<br>Errorcode: <b>1</b><br>Username or email already exists");
         } else {
-            $sql = "INSERT INTO " . "".$dbtable." (username, password, email, hwid) " . "VALUES ('" . $user . "', '" . $pass . "', '" . $email . "', '" . $hwid . "')";
+            $sql = "INSERT INTO " . "".$DBtable." (username, password, email, hwid) " . "VALUES ('" . $user . "', '" . $pass . "', '" . $email . "', '" . $hwid . "')";
 
-            $entry = mysqli_query($sql);
-            if ($entry) {
+            if ($DBcon->query($sql)) {
                 die('<br>FINISHED');
             } else {
                 die("<br>Errorcode: <b>5</b>");
             }
         }
     }
-} else {
-    die('<br>Errorcode: <b>6</b>');
-}
 
-mysqli_close();
+$DBcon->close();
 ?>
