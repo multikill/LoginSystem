@@ -1,22 +1,28 @@
 # LoginSystem [CURRENTLY PAUSED]
-```json
+```js
    I am currently working on a complete Recode of this Project updates Soon!
    The current Build is broken because i messed up a little, please wait for the Update
+   
+   The New Update will contain:
+   - Full MySQLi Support
+   - Anti SQL Injection
+   - Stronger Encryption (Traffic)
+   - IP-Log
+   - Last Login
 ```
 VB.NET LoginSystem with PHP API
 
-This Project was made by astron-dev.
+A Project by astron-dev and LMXGN.
 
-First thanks to Ar1i, for helping me.
-
-If you use my Code, i would really appreciate it if you give me Credit.
-
-Info:
-This is just an Example its not fully Secure!
+## Features:
+- HWID Lock
+- Server Check
+- Random Login Token
+- Traffic Encryption
 
 ### Todo:
 - [x] Encrypt the passwords
-- [x] Switch to MySQLi or PDO
 - [x] Random Token for each Login
-- [ ] Session Login System + Last IP
+- [x] Switch to MySQLi or PDO (In the next Update)
+- [ ] Last Login + Last IP (In the next Update)
 - [ ] WebPanel
