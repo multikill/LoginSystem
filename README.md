@@ -6,9 +6,9 @@
    The New Update will contain:
    - Full MySQLi Support
    - Anti SQL Injection
-   - Stronger Encryption (Traffic)
-   - IP-Log
-   - Last Login
+   - Clientside + Serverside Encryption
+   - WebPanel (example)
+   - AntiPiracy Check
 ```
 VB.NET LoginSystem with PHP API
 
@@ -18,11 +18,11 @@ A Project by astron-dev and LMXGN.
 - HWID Lock
 - Server Check
 - Random Login Token
-- Traffic Encryption
+- Clientside Encryption
 
 ### Todo:
 - [x] Encrypt the passwords
 - [x] Random Token for each Login
 - [x] Switch to MySQLi or PDO (In the next Update)
-- [ ] Last Login + Last IP (In the next Update)
-- [ ] WebPanel
+- [ ] Last Login + Last IP
+- [ ] WebPanel (In the next Update)
