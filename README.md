@@ -1,14 +1,6 @@
-# LoginSystem [CURRENTLY PAUSED]
+# LoginSystem [UPDATED]
 ```css
-   I am currently working on a complete Recode of this Project updates Soon!
-   The current Build is broken because i messed up a little, please wait for the Update
-   
-   The New Update will contain:
-   - Full MySQLi Support
-   - Anti SQL Injection
-   - Clientside + Serverside Encryption
-   - WebPanel (example)
-   - AntiPiracy Check
+   Some information, i will not upload the VB Code, update it yourself. I dont want that people skid my Code and dont give any Credits.
 ```
 VB.NET LoginSystem with PHP API
 
@@ -26,3 +18,12 @@ A Project by astron-dev and LMXGN.
 - [x] Switch to MySQLi or PDO (In the next Update)
 - [ ] Last Login + Last IP
 - [ ] WebPanel (In the next Update)
+
+##### How to make a Request:
+
+Register Request:
+http://yourdomain.net/API/Register.php?username=Username&email=Email&hwid=HWID-Hash&password=EncryptedPW
+
+Login Request:
+http://yourdomain.net/API/Login.php?username=Username&password=EncryptedPW&hwid=HWID-Hash&token=UnsignedRandomToken
+
