@@ -1,9 +1,16 @@
 <?php
 require_once 'DBconnect.php';
 
-if (isset($_GET['hwid'], $_GET['username'], $_GET['password'], $_GET['token'])) {
 
-  // Function to get the client IP address
+//allow only https
+if (empty($_SERVER['HTTPS'])) {
+    header('Location: 404.html');
+    exit;
+}
+
+if (isset($_POST['hwid'], $_POST['username'], $_POST['password'], $_POST['token'])) {
+
+// IP Logger ==> Get last IP of User trying to Login
 function get_client_ip() {
     $ipaddress = '';
     if (isset($_SERVER['HTTP_CLIENT_IP']))
@@ -23,21 +30,23 @@ function get_client_ip() {
     return $ipaddress;
 }
 
+$currentip = get_client_ip();
 
-
- $username = strip_tags($_GET['username']);
- $hwid = strip_tags($_GET['hwid']);
- $password = strip_tags($_GET['password']);
- $token       = $_GET['token'];
+//escape strings
+ $username = strip_tags($_POST['username']);
+ $hwid = strip_tags($_POST['hwid']);
+ $password = strip_tags($_POST['password']);
+ $token       = $_POST['token'];
 
  $username = $DBcon->real_escape_string($username);
  $hwid = $DBcon->real_escape_string($hwid);
  $password = $DBcon->real_escape_string($password);
 
+ //Check login request ==> send response
 $check_username = $DBcon->query("SELECT username FROM tbl_users WHERE username='$username'");
 $count_username=$check_username->num_rows;
 if ($count_username==0) {
-	die('[AntiLeak]: Invalid Username, please try again');
+	die('#error_invalid_user'); //
 } else {
 
  $query = $DBcon->query("SELECT user_id, password, hwid FROM tbl_users WHERE username='$username'");
@@ -54,24 +63,32 @@ if ($count_username==0) {
       $active = "1";
       $pending = "0";
       if ($result == $active) {
-      $DBcon->query("UPDATE tbl_users SET lastip='$ipadress' WHERE hwid='$hwid'");
+        $subcheck = $DBcon->query("SELECT membership FROM tbl_users WHERE hwid='$hwid'");
+        $row_subcheck = $subcheck->fetch_array();
+        $membership = $row_subcheck['membership'];
+        if ($membership == 1) {
+      mysqli_query($DBcon, 'UPDATE tbl_users SET lastip='.$currentip.' WHERE hwid='.$hwid.'');
 			$ctoken = md5($token);
 			die("$ctoken");
-    } elseif ($result == $pending) {
-      die('f642f6472bd671e5e16bb9281ed5be78'); //No Active Subscription
     } else {
-      die('2da4a62f14d48b1b34d4bb7839640983'); //HWID Changed
+      die('#error_no_items_owned');
+    }
+    } elseif ($result == $pending) {
+      die('#error_accountstatus_pending'); //accounts is not activated
+    } else {
+      die('#error_accoutn_untrusted'); //HWID Changed
     }
 		} else {
 			$DBcon->query("UPDATE tbl_users SET status='2' WHERE username='$username'");
-			die('2da4a62f14d48b1b34d4bb7839640983'); //HWID Changed
+			die('#error_hwid_changed'); //HWID changed ==> user untrusted
 		}
  } else {
-	 die('Error 1');
+	 die('#error_invalid_credentials');
  }
 }
 } else {
- die('[VB-AntiLeak]: Emulated Request, Client information Logged');
+ header('Location: 404.html');
 }
+
 $DBcon->close();
 ?>
